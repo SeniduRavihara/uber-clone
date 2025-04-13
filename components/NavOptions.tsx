@@ -1,6 +1,8 @@
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { selectOrigin } from "@/features/nav/navSlice";
 import { Icon } from "@rneui/themed";
 import { useRouter } from "expo-router";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -13,11 +15,12 @@ const data = [
     id: "2",
     title: "Order food",
     image: "https://links.papareact.com/28w",
-    screen: "/map",
+    screen: "/(map)",
   },
 ];
 
 const NavOptions = () => {
+  const origin = useSelector(selectOrigin);
 
   const router = useRouter();
 
@@ -27,11 +30,14 @@ const NavOptions = () => {
       horizontal
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TouchableOpacity className="p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40" onPress={()=> {
-           router.push(item.screen as any)
-           
-        }}>
-          <View>
+        <TouchableOpacity
+          className="p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40"
+          onPress={() => {
+            router.push(item.screen as any);
+          }}
+          disabled={!origin}
+        >
+            <View style={{ opacity: !origin ? 0.5 : 1 }}>
             <Image
               source={{ uri: item.image }}
               style={{ width: 120, height: 120, resizeMode: "contain" }}

@@ -11,7 +11,10 @@ export interface NavState {
     location: Point | undefined;
     description: string;
   } | null;
-  destination: string | null;
+  destination: {
+    location: Point | undefined;
+    description: string;
+  } | null;
   travelTimeInformation: string | null;
 }
 
@@ -30,11 +33,17 @@ export const navSlice = createSlice({
       action: PayloadAction<{
         location: Point | undefined;
         description: string;
-      }>
+      } | null>
     ) => {
       state.origin = action.payload;
     },
-    setDestination: (state, action: PayloadAction<string | null>) => {
+    setDestination: (
+      state,
+      action: PayloadAction<{
+        location: Point | undefined;
+        description: string;
+      } | null>
+    ) => {
       state.destination = action.payload;
     },
     setTravelTimeInformation: (state, action: PayloadAction<string | null>) => {
